@@ -1,19 +1,69 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const dbHelper = require("./dbHelper");
-
+const fs = require('fs');
+const { error } = require("console");
+const { v4: uuidv4 } = require('uuid');
 // создаем объект приложения
 const app = express();
+var tokens = new Map();
+
+
+
 
 // Подключаем body-parser
 app.use(bodyParser.json());
+//для корректной работы сторонних файлов
+app.use(express.static(__dirname + '/front-end'));
 
-/*app.use(express.static(__dirname + '/front-end'));*/
-/*
 app.get("/", (request, response) => {
-    response.sendFile(__dirname + '/public/calculator_320px.html');
-});*/
+    response.sendFile(__dirname + '/front-end/index.html');
+});
 
+app.get("/clients", (request, response) => {
+    //if(tokens.get(request.query.token)!== null){console.log('заебок')}
+
+    //
+    console.log(tokens.has(request.query.token));
+    if (tokens.has(request.query.token)) {
+        response.status(200).sendFile(__dirname + '/front-end/clients.html');
+    } else {
+        response.status(401).send(`<!DOCTYPE html>
+      <html>
+      <head>
+          <title>Ошибка</title>
+          <meta charset="utf-8" />
+      </head>
+      <body>
+          <h1>Вы не авторизованы</h1>
+      </body>
+      <html>`)
+    }
+});
+
+app.post("/login", (request, response) => {
+    const { login, pswd } = request.body;
+    dbHelper.getEmployeeByLoginAndPassw(function (err, results) {
+        if (err) response.status(400).json(err);
+        else {
+            if (results.length === 0) {
+                response.status(400).json({ 'error': 'неверный логин или пароль' });
+            } else {
+                let token = uuidv4().toString();
+                tokens.set(token, [login.toString(), pswd.toString()]);
+                response.status(200).json({ 'token': token });
+            }
+        }
+    }, login, pswd);
+});
+
+app.post("/get/getEmployeeByLoginAndPasw", function (request, response) {
+    const { login, pswd } = request.body;
+    dbHelper.getEmployeeByLoginAndPassw(function (err, results) {
+        if (err) response.status(400).json(err);
+        else response.status(200).json(results);
+    }, login, pswd);
+});
 app.post("/get/getClients", function (request, response) {
     dbHelper.getClients(function (err, results) {
         if (err) response.status(400).json(err);
@@ -89,21 +139,132 @@ app.post("/get/getSaleById", function (request, response) {
     }, id);
 });
 
+
+
+
+
 app.post("/add/addClient", function (request, response) {
+    dbHelper.connectWithDb();
     const { firstName, lastName, patronymic } = request.body;
     dbHelper.addClient(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
     }, firstName, lastName, patronymic);
+    dbHelper.disConnectWithDb();
 });
 
 app.post("/add/addArrivalCars", function (request, response) {
+    dbHelper.connectWithDb();
     const { id, idEmployee, addDate, idCar } = request.body;
     dbHelper.addArrivalCars(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
     }, id, idEmployee, addDate, idCar);
+    dbHelper.disConnectWithDb();
 });
+
+app.post("/add/addCar", function (request, response) {
+    dbHelper.connectWithDb();
+    const { idCar, Brand, Model, vinNumber, issYear, carcassType, Condition, Killometrage, purchasePrice, Color } = request.body;
+    dbHelper.addCar(function (err, results) {
+        if (err) response.status(400).json(err);
+        else response.status(200).json(results);
+    }, idCar, Brand, Model, vinNumber, issYear, carcassType, Condition, Killometrage, purchasePrice, Color);
+    dbHelper.disConnectWithDb();
+});
+
+app.post("/add/addSale", function (request, response) {
+    dbHelper.connectWithDb();
+    const { idSales, idCar, dateSales, idClient, idEmployee, saleValue } = request.body;
+    dbHelper.addSale(function (err, results) {
+        if (err) response.status(400).json(err);
+        else response.status(200).json(results);
+    }, idSales, idCar, dateSales, idClient, idEmployee, saleValue);
+    dbHelper.disConnectWithDb();
+});
+
+
+app.post("/drop/dropArrivalCars", function (request, response) {
+    dbHelper.connectWithDb();
+    const { id } = request.body;
+    dbHelper.dropArrivalCars(function (err, results) {
+        if (err) response.status(400).json(err);
+        else response.status(200).json(results);
+    }, id);
+    dbHelper.disConnectWithDb();
+});
+
+app.post("/drop/dropCar", function (request, response) {
+    dbHelper.connectWithDb();
+    const { id } = request.body;
+    dbHelper.dropCar(function (err, results) {
+        if (err) response.status(400).json(err);
+        else response.status(200).json(results);
+    }, id);
+    dbHelper.disConnectWithDb();
+});
+
+app.post("/drop/dropSale", function (request, response) {
+    dbHelper.connectWithDb();
+    const { id } = request.body;
+    dbHelper.dropSale(function (err, results) {
+        if (err) response.status(400).json(err);
+        else response.status(200).json(results);
+    }, id);
+    dbHelper.disConnectWithDb();
+});
+
+app.post("/drop/dropClient", function (request, response) {
+    dbHelper.connectWithDb();
+    const { id } = request.body;
+    dbHelper.dropClient(function (err, results) {
+        if (err) response.status(400).json(err);
+        else response.status(200).json(results);
+        dbHelper.disConnectWithDb();
+    }, id);
+});
+
+
+app.post("/update/updateArrivalCars", function (request, response) {
+    dbHelper.connectWithDb();
+    const { } = request.body;
+    dbHelper.updateArrivalCar(function (err, results) {
+        if (err) response.status(400).json(err);
+        else response.status(200).json(results);
+        dbHelper.disConnectWithDb();
+    }, id);
+});
+
+app.post("/update/updateSale", function (request, response) {
+    dbHelper.connectWithDb();
+    const { } = request.body;
+    dbHelper.updateSale(function (err, results) {
+        if (err) response.status(400).json(err);
+        else response.status(200).json(results);
+        dbHelper.disConnectWithDb();
+    }, id);
+});
+
+app.post("/update/updateCar", function (request, response) {
+    dbHelper.connectWithDb();
+    const { } = request.body;
+    dbHelper.updateCar(function (err, results) {
+        if (err) response.status(400).json(err);
+        else response.status(200).json(results);
+        dbHelper.disConnectWithDb();
+    }, id);
+});
+
+app.post("/update/updateClient", function (request, response) {
+    dbHelper.connectWithDb();
+    const { } = request.body;
+    dbHelper.updateClient(function (err, results) {
+        if (err) response.status(400).json(err);
+        else response.status(200).json(results);
+        dbHelper.disConnectWithDb();
+    }, id);
+});
+
 module.exports = app;
 
 app.listen(3001);

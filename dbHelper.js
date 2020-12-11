@@ -124,7 +124,7 @@ var getCarById = function (callback, id) {
 }
 
 var getEmployeeById = function (callback, id) {
-    var sql = "SELECT * FROM rgr.employee WHERE id_employee=" + id;
+    var sql = "SELECT id_employee, first_name, last_name, patronymic, post FROM rgr.employee WHERE id_employee=" + id;
     connection.query(sql, function (err, results) {
         if (err) {
             console.log("error");
@@ -146,6 +146,20 @@ var getSaleById = function (callback, id) {
         }
     });
 }
+
+var getEmployeeByLoginAndPassw = function (callback, login, pswd) {
+    var sql = "SELECT id_employee, first_name, last_name, patronymic, post FROM rgr.employee WHERE (login = ? AND password = ?);";
+    var object = [login, pswd];
+    connection.query(sql, object, function (err, results) {
+        if (err) {
+            console.log("error");
+            callback(err, null);
+        } else {
+            callback(null, results);
+        }
+    });
+}
+
 
 var addClient = function (callback, firstName, lastName, patronymic) {
     var sql = `INSERT INTO rgr.client (first_name, lastname, patronymic) VALUES ("${firstName}","${lastName}","${patronymic}");`;
@@ -172,9 +186,11 @@ var addArrivalCars = function (callback, id, idEmployee, addDate, idCar) {
     });
 }
 
-var addCar = function (callback, firstName, lastName, patronymic) {
-    var sql = `INSERT INTO rgr.client (first_name, lastname, patronymic) VALUES ("${firstName}","${lastName}","${patronymic}");`;
-    connection.query(sql, function (err, results) {
+var addCar = function (callback, idCar, Brand, Model, vinNumber, issYear, carcassType, Condition, Killometrage, purchasePrice, Color) {
+    //var sql = `INSERT INTO rgr.car (id_car, brand,model, vin_number, iss_year, carcass_type, condition, killometrage, purchase_price, color) VALUES (?,?,?,?,?,?,?,?,?,?);`
+    var sql = "INSERT INTO `rgr`.`car` (`id_car`, `brand`, `model`, `vin_number`, `iss_year`, `carcass_type`, `condition`, `killometrage`, `purchase_price`, `color`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    var car = [idCar, Brand, Model, vinNumber, issYear, carcassType, Condition, Killometrage, purchasePrice, Color];
+    connection.query(sql, car, function (err, results) {
         if (err) {
             console.log("error");
             callback(err, null);
@@ -184,9 +200,10 @@ var addCar = function (callback, firstName, lastName, patronymic) {
     });
 }
 
-var addEmployee = function (callback, firstName, lastName, patronymic) {
-    var sql = `INSERT INTO rgr.client (first_name, lastname, patronymic) VALUES ("${firstName}","${lastName}","${patronymic}");`;
-    connection.query(sql, function (err, results) {
+var addSale = function (callback, idSales, idCar, dateSales, idClient, idEmployee, saleValue) {
+    var sql = "INSERT INTO `rgr`.`sales` (`id_sales`, `id_car`, `date_sales`, `id_client`, `id_employee`, `sale_value`) VALUES (?, ?, ?, ?, ?, ?);";
+    var sale = [idSales, idCar, dateSales, idClient, idEmployee, saleValue];
+    connection.query(sql, sale, function (err, results) {
         if (err) {
             console.log("error");
             callback(err, null);
@@ -196,9 +213,104 @@ var addEmployee = function (callback, firstName, lastName, patronymic) {
     });
 }
 
-var addSale = function (callback, firstName, lastName, patronymic) {
-    var sql = `INSERT INTO rgr.client (first_name, lastname, patronymic) VALUES ("${firstName}","${lastName}","${patronymic}");`;
-    connection.query(sql, function (err, results) {
+
+var dropClient = function (callback, id) {
+    //DELETE FROM `rgr`.`client` WHERE (`id_client` = '25');
+    var sql = "DELETE FROM `rgr`.`client` WHERE (`id_client` = ?);";
+    var i = [id];
+    connection.query(sql, i, function (err, results) {
+        if (err) {
+            console.log("error");
+            callback(err, null);
+        } else {
+            callback(null, results);
+        }
+    });
+}
+
+var dropArrivalCars = function (callback, id) {
+    var sql = "DELETE FROM `rgr`.`arrival_car` WHERE (`id` = ?);";
+    var i = [id];
+    connection.query(sql, i, function (err, results) {
+        if (err) {
+            console.log("error");
+            callback(err, null);
+        } else {
+            callback(null, results);
+        }
+    });
+}
+
+var dropCar = function (callback, id) {
+    var sql = "DELETE FROM `rgr`.`car` WHERE (`id_car` = ?);";
+    var i = [id];
+    connection.query(sql, i, function (err, results) {
+        if (err) {
+            console.log("error");
+            callback(err, null);
+        } else {
+            callback(null, results);
+        }
+    });
+}
+
+var dropSale = function (callback, id) {
+    var sql = "DELETE FROM `rgr`.`sales` WHERE (`id_sales` = ?);";
+    var i = [id];
+    connection.query(sql, i, function (err, results) {
+        if (err) {
+            console.log("error");
+            callback(err, null);
+        } else {
+            callback(null, results);
+        }
+    });
+}
+
+
+var updateSale = function (callback, idCar, dateSales, idClient, idEmployee, saleValue, id) {
+    var sql = "UPDATE `rgr`.`sales` SET `id_car` = ?, `date_sales` = ?, `id_client` = ?, `id_employee` = ?, `sale_value` = ? WHERE (`id_sales` = ?);";
+    var object = [idCar, dateSales, idClient, idEmployee, saleValue, id];
+    connection.query(sql, object, function (err, results) {
+        if (err) {
+            console.log("error");
+            callback(err, null);
+        } else {
+            callback(null, results);
+        }
+    });
+}
+
+var updateArrivalCar = function (callback, idEmployee, addDate, idCar, id) {
+    var sql = "UPDATE `rgr`.`arrival_car` SET `id_employee` = ?, `add_date` = ?, `id_car` = ? WHERE (`id` = ?);";
+    var object = [idEmployee, addDate, idCar, id];
+    connection.query(sql, object, function (err, results) {
+        if (err) {
+            console.log("error");
+            callback(err, null);
+        } else {
+            callback(null, results);
+        }
+    });
+}
+
+var updateClient = function (callback, firstName, lastName, patronymic, id) {
+    var sql = "UPDATE `rgr`.`client` SET `first_name` = ?, `lastname` = ?, `patronymic` = ? WHERE (`id_client` = ?);";
+    var object = [firstName, lastName, patronymic, id];
+    connection.query(sql, object, function (err, results) {
+        if (err) {
+            console.log("error");
+            callback(err, null);
+        } else {
+            callback(null, results);
+        }
+    });
+}
+
+var updateCar = function (callback, Brand, Model, vinNumber, issYear, carcassType, Condition, Killometrage, purchasePrice, Color, id) {
+    var sql = "UPDATE `rgr`.`car` SET `brand` = ?, `model` = ?, `vin_number` = ?, `iss_year` = ?, `carcass_type` = ?, `condition` = ?, `killometrage` = ?, `purchase_price` = ?, `color` = ? WHERE (`id_car` = ?);";
+    var object = [Brand, Model, vinNumber, issYear, carcassType, Condition, Killometrage, purchasePrice, Color, id];
+    connection.query(sql, object, function (err, results) {
         if (err) {
             console.log("error");
             callback(err, null);
@@ -214,6 +326,11 @@ module.exports = {
     getEmployees, getSales,
     getClientById, getArrivalCarsById,
     getCarById, getEmployeeById,
-    getSaleById, addClient,
-    addArrivalCars
+    getSaleById, getEmployeeByLoginAndPassw, addClient,
+    addArrivalCars, addCar,
+    addSale, dropArrivalCars,
+    dropCar, dropClient,
+    dropSale, updateArrivalCar,
+    updateClient, updateSale,
+    updateCar
 };
