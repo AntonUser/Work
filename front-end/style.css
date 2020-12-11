@@ -1,0 +1,11 @@
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.a {
+    width: auto;
+    height: auto;
+  margin-top: 15%;
+}
