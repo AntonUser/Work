@@ -1,11 +1,43 @@
 .form-group {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .a {
-    width: auto;
-    height: auto;
+  width: auto;
+  height: auto;
   margin-top: 15%;
+}
+
+.c-button {
+  appearance: none;
+  border: 0;
+  border-radius: 5px;
+  background: #4676D7;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 16px;
+}
+
+label {
+  appearance: none;
+  border: 0;
+  border-radius: 5px;
+  background: #dd422d;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 16px;
+}
+
+input:checked+label {
+  background-color: green;
+}
+
+.mark {
+  background-color: none;
+}
+
+.span-width{
+  width: 185px;
 }

@@ -26,7 +26,7 @@
 <body>
     <div class="form-group a">
         <div class="padding">
-            <form method="POST" id="form" name="form">
+            <form method="GET" id="form" name="form">
                 <div class="form-group">
                     <input type="text" class="form-control" id="login" name="login" placeholder="Enter login"
                         name="login">
@@ -35,12 +35,19 @@
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password"
                         name="password">
                 </div>
-                <input type="text" name="result" id="result">
-                <button type="submit" class="form-group btn btn-primary" onclick="fun1()">Submit</button>
+                <button id="log" name="login" type="button" class="form-group btn btn-primary">LOG</button>
             </form>
         </div>
     </div>
     <script>
+        $(document).ready(function () {
+            $("#log").click(
+                function () {
+                    fun1();
+                    return false;
+                }
+            );
+        });
     </script>
 </body>
 

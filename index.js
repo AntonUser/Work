@@ -21,12 +21,61 @@ app.get("/", (request, response) => {
 });
 
 app.get("/clients", (request, response) => {
-    //if(tokens.get(request.query.token)!== null){console.log('заебок')}
-
-    //
-    console.log(tokens.has(request.query.token));
+    console.log("/clients")
     if (tokens.has(request.query.token)) {
         response.status(200).sendFile(__dirname + '/front-end/clients.html');
+    } else {
+        response.status(401).send(`<!DOCTYPE html>
+      <html>
+      <head>
+          <title>Ошибка</title>
+          <meta charset="utf-8" />
+      </head>
+      <body>
+          <h1>Вы не авторизованы</h1>
+      </body>
+      <html>`)
+    }
+});
+
+
+app.get("/cars", (request, response) => {
+    if (tokens.has(request.query.token)) {
+        response.status(200).sendFile(__dirname + '/front-end/cars.html');
+    } else {
+        response.status(401).send(`<!DOCTYPE html>
+      <html>
+      <head>
+          <title>Ошибка</title>
+          <meta charset="utf-8" />
+      </head>
+      <body>
+          <h1>Вы не авторизованы</h1>
+      </body>
+      <html>`)
+    }
+});
+
+app.get("/arrivalCars", (request, response) => {
+    if (tokens.has(request.query.token)) {
+        response.status(200).sendFile(__dirname + '/front-end/arrivalcars.html');
+    } else {
+        response.status(401).send(`<!DOCTYPE html>
+      <html>
+      <head>
+          <title>Ошибка</title>
+          <meta charset="utf-8" />
+      </head>
+      <body>
+          <h1>Вы не авторизованы</h1>
+      </body>
+      <html>`)
+    }
+});
+
+app.get("/sales", (request, response) => {
+    if (tokens.has(request.query.token)) {
+        response.status(200).sendFile(__dirname + '/front-end/sales.html');
     } else {
         response.status(401).send(`<!DOCTYPE html>
       <html>
@@ -144,125 +193,101 @@ app.post("/get/getSaleById", function (request, response) {
 
 
 app.post("/add/addClient", function (request, response) {
-    dbHelper.connectWithDb();
     const { firstName, lastName, patronymic } = request.body;
     dbHelper.addClient(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
     }, firstName, lastName, patronymic);
-    dbHelper.disConnectWithDb();
 });
 
 app.post("/add/addArrivalCars", function (request, response) {
-    dbHelper.connectWithDb();
     const { id, idEmployee, addDate, idCar } = request.body;
     dbHelper.addArrivalCars(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
     }, id, idEmployee, addDate, idCar);
-    dbHelper.disConnectWithDb();
 });
 
 app.post("/add/addCar", function (request, response) {
-    dbHelper.connectWithDb();
     const { idCar, Brand, Model, vinNumber, issYear, carcassType, Condition, Killometrage, purchasePrice, Color } = request.body;
     dbHelper.addCar(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
     }, idCar, Brand, Model, vinNumber, issYear, carcassType, Condition, Killometrage, purchasePrice, Color);
-    dbHelper.disConnectWithDb();
 });
 
 app.post("/add/addSale", function (request, response) {
-    dbHelper.connectWithDb();
     const { idSales, idCar, dateSales, idClient, idEmployee, saleValue } = request.body;
     dbHelper.addSale(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
     }, idSales, idCar, dateSales, idClient, idEmployee, saleValue);
-    dbHelper.disConnectWithDb();
 });
 
 
 app.post("/drop/dropArrivalCars", function (request, response) {
-    dbHelper.connectWithDb();
     const { id } = request.body;
     dbHelper.dropArrivalCars(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
     }, id);
-    dbHelper.disConnectWithDb();
 });
 
 app.post("/drop/dropCar", function (request, response) {
-    dbHelper.connectWithDb();
     const { id } = request.body;
     dbHelper.dropCar(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
     }, id);
-    dbHelper.disConnectWithDb();
 });
 
 app.post("/drop/dropSale", function (request, response) {
-    dbHelper.connectWithDb();
     const { id } = request.body;
     dbHelper.dropSale(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
     }, id);
-    dbHelper.disConnectWithDb();
 });
 
 app.post("/drop/dropClient", function (request, response) {
-    dbHelper.connectWithDb();
     const { id } = request.body;
     dbHelper.dropClient(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
-        dbHelper.disConnectWithDb();
     }, id);
 });
 
 
 app.post("/update/updateArrivalCars", function (request, response) {
-    dbHelper.connectWithDb();
-    const { } = request.body;
+    const { idEmployee, addDate, idCar, id } = request.body;
     dbHelper.updateArrivalCar(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
-        dbHelper.disConnectWithDb();
-    }, id);
+    }, idEmployee, addDate, idCar, id);
 });
 
 app.post("/update/updateSale", function (request, response) {
-    dbHelper.connectWithDb();
-    const { } = request.body;
+    const { idCar, dateSales, idClient, idEmployee, saleValue, id } = request.body;
     dbHelper.updateSale(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
-        dbHelper.disConnectWithDb();
-    }, id);
+    }, idCar, dateSales, idClient, idEmployee, saleValue, id);
 });
 
 app.post("/update/updateCar", function (request, response) {
-    dbHelper.connectWithDb();
-    const { } = request.body;
+    const { Brand, Model, vinNumber, issYear, carcassType, Condition, Killometrage, purchasePrice, Color, id } = request.body;
     dbHelper.updateCar(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
-        dbHelper.disConnectWithDb();
-    }, id);
+    }, Brand, Model, vinNumber, issYear, carcassType, Condition, Killometrage, purchasePrice, Color, id);
 });
 
 app.post("/update/updateClient", function (request, response) {
-    dbHelper.connectWithDb();
-    const { } = request.body;
+    const { firstName, lastName, patronymic, id } = request.body;
     dbHelper.updateClient(function (err, results) {
         if (err) response.status(400).json(err);
         else response.status(200).json(results);
-        dbHelper.disConnectWithDb();
-    }, id);
+    }, firstName, lastName, patronymic, id);
 });
 
 module.exports = app;

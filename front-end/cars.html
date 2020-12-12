@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clients</title>
+    <title>Cars</title>
     <link rel="stylesheet" href="/style.css">
-    <script src="clients.script.js"></script>
+    <script src="cars.script.js"></script>
     <script src="router.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -81,36 +81,116 @@
                 <!--поле формы-->
                 <tr>
                     <td>
-                        <div id="first" class="input-group">
+                        <div id="id1" class="input-group">
                             <!--поле формы-->
                             <div class="input-group-prepend">
-                                <span class="span-width input-group-text font bg-dark" style="color: white">First
-                                    Name</span>
-                                <input type="text" class="width_ form-control" id="fn" placeholder="Ivan">
+                                <span class="span-width input-group-text font bg-dark" style="color: white">Car
+                                    ID</span>
+                                <input type="text" class=" form-control" id="key" placeholder="1">
                             </div>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <div id="pat" class="input-group">
+                        <div id="id2" class="input-group">
+                            <!--поле формы-->
+                            <div class="input-group-prepend">
+                                <span class="span-width input-group-text font bg-dark" style="color: white">Brand</span>
+                                <input type="text" class="form-control" id="bra" placeholder="Toyota">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="id3" class="input-group">
+                            <!--поле формы-->
+                            <div class="input-group-prepend">
+                                <span class="span-width input-group-text font bg-dark" style="color: white">Model</span>
+                                <input type="text" class="form-control" id="mod" placeholder="Camry">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="id4" class="input-group">
+                            <!--поле формы-->
+                            <div class="input-group-prepend">
+                                <span class="span-width input-group-text font bg-dark" style="color: white">VIN</span>
+                                <input type="text" class="form-control" id="vin" placeholder="XR5656F666">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="id5" class="input-group">
+                            <!--поле формы-->
+                            <div class="input-group-prepend">
+                                <span class="span-width input-group-text font bg-dark" style="color: white">Issuces
+                                    year</span>
+                                <input type="text" class="form-control" id="iss" placeholder="2020">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="id6" class="input-group">
+                            <!--поле формы-->
+                            <div class="input-group-prepend">
+                                <span class="span-width input-group-text font bg-dark" style="color: white">Carcas
+                                    type</span>
+                                <input type="text" class="form-control" id="carcas" placeholder="Sedan">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="id7" class="input-group">
                             <!--поле формы-->
                             <div class="input-group-prepend">
                                 <span class="span-width input-group-text font bg-dark"
-                                    style="color: white">Patronymic</span>
-                                <input type="text" class="width_ form-control" id="pa" placeholder="Ivanovich">
+                                    style="color: white">Condition</span>
+                                <input type="text" class="form-control" id="con" placeholder="old/new">
                             </div>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <div id="last" class="input-group">
+                        <div id="id8" class="input-group">
                             <!--поле формы-->
                             <div class="input-group-prepend">
-                                <span class="span-width input-group-text font bg-dark" style="color: white">Last
-                                    Name</span>
-                                <input type="text" class="width_ form-control" id="ln" placeholder="Ivanov">
+                                <span class="span-width input-group-text font bg-dark"
+                                    style="color: white">Killometrage</span>
+                                <input type="text" class="form-control" id="kil" placeholder="20000">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="id9" class="input-group">
+                            <!--поле формы-->
+                            <div class="input-group-prepend">
+                                <span class="span-width input-group-text font bg-dark" style="color: white">Purchase
+                                    price</span>
+                                <input type="text" class="form-control" id="pur" placeholder="1000000 ">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="id10" class="input-group">
+                            <!--поле формы-->
+                            <div class="input-group-prepend">
+                                <span class="span-width input-group-text font bg-dark" style="color: white">Color</span>
+                                <input type="text" class="form-control" id="col" placeholder="White">
                             </div>
                         </div>
                     </td>
@@ -139,9 +219,15 @@
         <thead class="thead-dark">
             <tr>
                 <th>Id</th>
-                <th>First Name</th>
-                <th>Patronymic</th>
-                <th>Lastname</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>VIN</th>
+                <th>Iss_year</th>
+                <th>Carcas type</th>
+                <th>Condition</th>
+                <th>Killom</th>
+                <th>Price_pur</th>
+                <th>Color</th>
                 <th></th>
                 <th></th>
             </tr>
