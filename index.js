@@ -190,8 +190,6 @@ app.post("/get/getSaleById", function (request, response) {
 
 
 
-
-
 app.post("/add/addClient", function (request, response) {
     const { firstName, lastName, patronymic } = request.body;
     dbHelper.addClient(function (err, results) {
